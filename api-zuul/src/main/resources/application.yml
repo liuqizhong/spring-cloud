@@ -1,0 +1,38 @@
+spring: 
+  application:
+    name: api-zuul
+
+server: 
+  port: 9000   
+
+eureka: 
+  client:
+    service-url:
+      defaultZone: http://peer1:8760/eureka/,http://peer2:8761/eureka/ 
+      
+zuul: 
+  routes: 
+    routetest: 
+      url: http://www.163.com #使用简单路由路由过滤器(SimpleHostRoutingFilter 优先级100)
+    provider-server: 
+      path: /hello/**
+      serviceId: provider-server  #使用Ribbon路由过滤器(RibbonRoutingFilter 优先级10), 注意：只有这种方式支持hystrix和ribbon
+      
+      #forward ，使用的是转发路由过滤器(SendForwardFilter)
+      
+
+hystrix: #当用到的是Ribbon路由过滤器时，hystrix的配置会生效
+  command: 
+    default:  
+      execution: 
+        isolation: 
+          thread: 
+            timeoutInMilliseconds: 
+      circuitBreaker:
+        requestVolumeThreshold: 3000
+
+management:
+  security:
+    enabled: false   #管理端点   ，访问http://localhost:9000/routes
+    
+           

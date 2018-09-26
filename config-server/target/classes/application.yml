@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          #git仓库地址，可以远程仓库或者本地仓库，推荐远程仓库
+          uri: https://gitee.com/liuqizhong/springcloud_config-server/ #远程参考读取，用于生产环境
+               #file://E:/Work/Code/Demo/SpringCloud/springcloud_config-server/ #本地git参考读取，用于开发和测试环境 
+          #git仓库的子目录
+          search-paths: "{application}" #根据客户端的spring.application.name来匹配一个子文件夹，可以达到一个应用对应一个文件夹的效果
+          #git用户名
+          username: liuqizhong
+          #git密码
+          password: 67zhong
+    bus:
+      trace:
+        enabled: true #跟踪总线事件,Spring Cloud Bus事件传播的细节,在/bus/refresh端点被请求后，访问/trace端点获取细节信息
+  rabbitmq: 
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest  
+    
+management:
+  security:
+    enabled: false   
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://peer1:8760/eureka/,http://peer2:8761/eureka/  
+      
+---
+
+spring:
+  profiles: peer1
+  
+server:
+  port: 7070   
+  
+---
+
+spring:
+  profiles: peer2
+  
+server:
+  port: 7071     
+       
+  
+    

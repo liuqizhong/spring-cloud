@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: stream-productor
+  cloud: 
+    stream:
+      bindings: 
+        output: 
+          destination: input
+          producer: 
+            partitionKeyExpression: payload.age #指定了分区键的表达式规则，我们可以根据实际的输出消息规则来配置SpEL来生成合适的分区键；
+            partitionCount: 2 #消息分区的数量

@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: stream-consumer
+  cloud:
+    stream:
+      bindings:
+        input: 
+          group: Service-A   #消费组，指定了该应用的所有实例都属于Service-A消费组, 目的是解决消费重复消费问题(每条消息只会被一个实例消费，每个实例会轮询去消费不同的消息，实现了负载均衡的功能)
+          destination: input   #指定了输入通道对应的topic(Rabbitmq的topic是exchange, kafka的是Topic)
+          consumer: 
+            partitioned: true  #开启消费者分区功能
+      instanceCount: 2   #当前消费者的总实例数量 
+---
+spring:
+  profiles: peer1
+  cloud: 
+    stream:
+      instance-index: 0
+
+server:
+  port: 7020
+    
+---
+spring: 
+  profiles: peer2
+  cloud: 
+    stream:
+      instance-index: 1
+server:
+  port: 7021  
+         

@@ -1,0 +1,43 @@
+spring:
+  profiles: peer1
+  application:
+    name: eureka-server 
+    
+server:
+  port: 8760
+  
+eureka:
+  server: 
+    #是否关闭保护机制：Eureka Server在运行期间，会统计心跳失败比例在15分钟之内是否低于85%，如果低于则会保护起来，让这些实例不过期，尽可能保护这些服务实列
+    #但是，在这段保护期间内实例若出现问题，那么客户端很容易拿到实际不存在的服务实例，会出现调用失败的情况，
+    #所以客户端必须有容错机制，比如可以使用请求重试，断路器等机制
+    enable-self-preservation: false 
+  client:
+    register-with-eureka: true #是否注册到服务中心: 单实例设置false, 代表不向服务中心注册自己, 集群设置true
+    fetch-registry: true  #是否获取服务: 服务注册中心的职责是维护服务实例, 单实例的话它并不需要去检索服务, 设置false, 集群设置true
+    serviceUrl: 
+      defaultZone: http://peer2:8761/eureka/
+      
+security:
+  basic:
+    enabled: true
+  user:
+    name: admin
+    password: admin      
+      
+---
+spring:
+  profiles: peer2
+  application:
+    name: eureka-server
+    
+server: 
+  port: 8761
+  
+eureka:
+  client: 
+    service-url:
+      defaultZone: http://peer1:8760/eureka/
+       
+  
+        

@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: test-client-config
+  cloud:
+    config:
+      #fail-fast: true #快速判断Config Server是否正常, 只有spring.cloud.config.uri才有效, 采用spring.cloud.config.discovery.service-id方式时该参数无效
+      profile: prod #profile
+      label: master  #分支
+      #uri: http://localhost:7070/  #配置中心服务端得地址
+      discovery: 
+        enabled: true  #开启通过服务来访问Config Server 的功能
+        service-id: config-server
+  rabbitmq: 
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  security:
+    enabled: false     
+
+  
+eureka:
+  client:
+    service-url: 
+      defaultZone: http://peer1:8760/eureka/,http://peer2:8761/eureka/  
+      
+---
+spring:
+  profiles: peer1
+server: 
+  port: 7080 
+  
+---
+spring:
+  profiles: peer2
+server: 
+  port: 7081    
+      
+      
+          

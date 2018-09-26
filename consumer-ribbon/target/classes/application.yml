@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: ribbon-consumer
+    
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true  #是否获取服务: 获取服务是服务消费者的基础
+    registry-fetch-interval-seconds: 30  #缓存服务清单有效期: 为了性能, 服务消费者将Eureka Server返回的服务只读清单进行缓存, 每隔30秒更新一次
+    service-url:
+      defaultZone: http://peer1:8760/eureka/,http://peer2:8761/eureka/      
+
+---
+
+spring:
+  profiles: peer1
+
+server:
+  port: 8090
+  
+  
+---
+spring:
+  profiles: peer2
+   
+server:
+  port: 8091 
+          

@@ -1,0 +1,13 @@
+spring: 
+  application:
+    name: provider-server
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 30  #服务租约: 发送心跳的时间间隔(定义服务续约任务的调用间隔时间)
+    lease-expiration-duration-in-seconds:  90  #服务失效的时间
+  client:
+    register-with-eureka: true  #是否注册到服务中心
+    service-url: 
+      defaultZone: http://peer1:8760/eureka/,http://peer2:8761/eureka/
+           
